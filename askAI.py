@@ -24,6 +24,7 @@ The user query is:
 
 
 def import_settings()->dict:
+    """Import settings from '.config'"""
     if not os.path.isdir(Path.home()/".config"/"askAI"):
         os.mkdir(Path.home()/".config"/"askAI")
     if not os.path.isfile(Path.home()/".config"/"askAI"/"config.yaml"):
@@ -45,7 +46,7 @@ api-key: null
 
 
 def parse(config: dict)->argparse.Namespace:
-    """verify arguments from user"""
+    """Verify arguments from user dynamically from config file"""
     parser = argparse.ArgumentParser(description="Ask AI to create a command for you",
                                      epilog="You can always use the config file to not define every time")
     parser.add_argument('-a', '--api-point',
@@ -67,6 +68,7 @@ def parse(config: dict)->argparse.Namespace:
 
 
 def send_query(args: argparse.Namespace)->str:
+    """Send query to api point chosen by user"""
     match args.api_point:
         case "chatGPT":
             raise SystemExit("not implemented yet (chatGPT)")
@@ -77,6 +79,7 @@ def send_query(args: argparse.Namespace)->str:
 
 
 def askOllama(args: argparse.Namespace)->str:
+    """Send query to ollama using langchain lib"""
     from langchain_community.llms import Ollama
     from langchain_core.output_parsers import StrOutputParser
     from langchain_core.prompts import ChatPromptTemplate
@@ -91,6 +94,7 @@ def askOllama(args: argparse.Namespace)->str:
 
 
 def parseOutput(resp: str)->str:
+    """Take an str with the '<CODE>' and </CODE>' brackets and return what's between"""
     match =  re.search(r'<CODE>(.*)</CODE>', resp)
     if match:
         return match.group(1)
