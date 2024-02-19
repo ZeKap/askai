@@ -3,9 +3,10 @@ import yaml
 import os
 from pathlib import Path
 import re
+from openai import OpenAI
 
-personnal_system_message: str = """
-You have to create a shell command for the user.
+personnal_system_message: str = \
+"""You have to create a shell command for the user.
 The user will ask for a quick command to do something in their shell,
 and you can only respond with the shell command that will help them.
 You CAN'T ASK for more informations, do with what you have.
@@ -70,12 +71,25 @@ def parse(config: dict)->argparse.Namespace:
 def send_query(args: argparse.Namespace)->str:
     """Send query to api point chosen by user"""
     match args.api_point:
-        case "chatGPT":
-            raise SystemExit("not implemented yet (chatGPT)")
-        case "ollama":
+        case "chatGPT" | "openai" | "openAI":
+            return askChatGPT(args)
+        case "ollama" | "Ollama":
             return askOllama(args)
         case _:
             raise SystemExit("api not found")
+
+
+def askChatGPT(args: argparse.Namespace)->str:
+    """Send query to chatGPT using"""
+    client = OpenAI(api_key=args.api_key)
+    completion = client.chat.completions.create(
+        model=args.model,
+        messages=[
+            {"role": "system", "content": personnal_system_message},
+            {"role": "user", "content": args.query}
+        ]
+    )
+    return completion.choices[0].message.content or 'There was an issue with openAI'
 
 
 def askOllama(args: argparse.Namespace)->str:
