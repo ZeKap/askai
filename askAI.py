@@ -2,6 +2,7 @@ import argparse
 import yaml
 import os
 from pathlib import Path
+import re
 
 personnal_system_message: str = """
 You have to create a shell command for the user.
@@ -89,8 +90,15 @@ def askOllama(args: argparse.Namespace)->str:
     return chain.invoke({"input": args.query})
 
 
+def parseOutput(resp: str)->str:
+    match =  re.search(r'<CODE>(.*)</CODE>', resp)
+    if match:
+        return match.group(1)
+    raise Exception(resp)
+
+
 if __name__ == "__main__":
     config: dict = import_settings()
     args: argparse.Namespace = parse(config)
     #print(args)
-    print(send_query(args))
+    print(parseOutput(send_query(args)))
