@@ -141,8 +141,7 @@ def askExecuteCommand(command)->bool:
         else: return False
     else : return True
 
-
-if __name__ == "__main__":
+def main():
     config: dict = import_settings()
     args: argparse.Namespace = parse(config)
     args.query = ''.join(args.query)
@@ -152,3 +151,6 @@ if __name__ == "__main__":
         askExecuteCommand(output)
     else:
         print("AI didn't return a command, here is its output:\n"+output)
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "askai"
+authors = [{name = "ZeKap"}]
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+version = "1.0"
+dependencies = [
+    'PyYAML',
+    "getch",
+]
+
+[project.scripts]
+askai = "askAI:main"
