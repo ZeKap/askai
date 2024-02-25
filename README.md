@@ -44,7 +44,7 @@ python3 ~/[where you put askai]/askAI.py ${params[@]}; \
 ```
 
 # Your config, your AI.
-In the first launch, askai will tell you it's missing a lot of informations to works.
+In the first launch, askai will tell you it's missing a lot of informations to work.
 In fact, it will first create the directory needed in `.config/askAI/config.yaml` and the YAML file for you to fill. When you don't add "default" settings in the config file, you'll need to set the parameters when calling askai and that's why its telling you it's missing informations.
 
 # Other API
