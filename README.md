@@ -24,6 +24,25 @@ If you have any question, feel free to ask.
 ```
 But it depends on what AI you use. On this topic:
 
+# Installation
+
+## pipx (easiest)
+```sh
+pipx install git+https://github.com/ZeKap/askai
+```
+
+## manual
+Just copy askAI.py somewhere, and install its dependencies. Since it will probably be in a venv, you can use this script to call it easily:
+```sh
+#!/bin/sh
+
+params=("$*")
+bash -c "\
+source ~/[where you put askai]/venv/bin/activate; \
+python3 ~/[where you put askai]/askAI.py ${params[@]}; \
+"
+```
+
 # Your config, your AI.
 In the first launch, askai will tell you it's missing a lot of informations to works.
 In fact, it will first create the directory needed in `.config` and the YAML file for you to fill. When you don't add "default" settings in the config file, you'll need to set the parameters when calling askai and that's why its telling you it's missing informations.
@@ -34,16 +53,3 @@ If you want to use another API, feel free to make the function and do a pull req
 
 # Small project
 As this is a really small project, don't expect a lot support nor updates. I only made functions to use chatGPT and ollama because that the ones I use, if any other API can be used, it's thanks to somebody else.
-
-# Call from anywhere
-As python now require you to have a local env to works, a workaround to be able to use askai anywhere is to create a `.sh` script in your `.bin`. If you want, you can use this template:
-```sh
-#!/bin/sh
-
-params=("$*")
-bash -c "\
-source ~/[where you put askai]/venv/bin/activate; \
-python3 ~/[where you put askai]/askAI.py ${params[@]}; \
-"
-```
-Why does it need to work like that? I have no idea, `bash -c` is a mystery. But it works!
