@@ -72,7 +72,8 @@ def parse(config: dict)->argparse.Namespace:
                         default=config["api-key"])
     parser.add_argument('query',
                         metavar='Query',
-                        help='Query send to AI')
+                        help='Query send to AI',
+                        nargs='+')
     return parser.parse_args()
 
 
