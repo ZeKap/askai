@@ -34,3 +34,16 @@ If you want to use another API, feel free to make the function and do a pull req
 
 # Small project
 As this is a really small project, don't expect a lot support nor updates. I only made functions to use chatGPT and ollama because that the ones I use, if any other API can be used, it's thanks to somebody else.
+
+# Call from anywhere
+As python now require you to have a local env to works, a workaround to be able to use askai anywhere is to create a `.sh` script in your `.bin`. If you want, you can use this template:
+```sh
+#!/bin/sh
+
+params=("$*")
+bash -c "\
+source ~/[where you put askai]/venv/bin/activate; \
+python3 ~/[where you put askai]/askAI.py ${params[@]}; \
+"
+```
+Why does it need to work like that? I have no idea, `bash -c` is a mystery. But it works!
