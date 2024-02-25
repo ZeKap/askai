@@ -45,7 +45,7 @@ python3 ~/[where you put askai]/askAI.py ${params[@]}; \
 
 # Your config, your AI.
 In the first launch, askai will tell you it's missing a lot of informations to works.
-In fact, it will first create the directory needed in `.config` and the YAML file for you to fill. When you don't add "default" settings in the config file, you'll need to set the parameters when calling askai and that's why its telling you it's missing informations.
+In fact, it will first create the directory needed in `.config/askAI/config.yaml` and the YAML file for you to fill. When you don't add "default" settings in the config file, you'll need to set the parameters when calling askai and that's why its telling you it's missing informations.
 
 # Other API
 With askai, you can of course use openAI chatGPT, but you can also use ollama if you want to use a local AI.
