@@ -6,6 +6,7 @@ from pathlib import Path
 import re
 from openai import OpenAI
 from typing import Tuple
+import getch
 
 personnal_system_message: str = \
 """
@@ -129,9 +130,22 @@ def parseOutput(resp: str)->Tuple[bool, str]:
     else: return False, resp
 
 
+def askExecuteCommand(command)->bool:
+    print('AI found this, execute it? [Y/n]\n'+command, end='')
+    exe = getch.getch()
+    if exe.lower().rstrip().lstrip() in ['', 'y', 'yes']:
+        print()
+        if 0 == os.system(command): return True
+        else: return False
+    else : return True
+
+
 if __name__ == "__main__":
     config: dict = import_settings()
     args: argparse.Namespace = parse(config)
     #print(args)
     isCommand, output = parseOutput(send_query(args))
-    print(output, isCommand)
+    if isCommand:
+        askExecuteCommand(output)
+    else:
+        print("AI didn't return a command, here is its output:\n"+output)
