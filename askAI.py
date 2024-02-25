@@ -1,12 +1,15 @@
 import argparse
+import sys
 import yaml
 import os
 from pathlib import Path
 import re
 from openai import OpenAI
+from typing import Tuple
 
 personnal_system_message: str = \
-"""You have to create a shell command for the user.
+"""
+You have to create a shell command for the user.
 The user will ask for a quick command to do something in their shell,
 and you can only respond with the shell command that will help them.
 You CAN'T ASK for more informations, do with what you have.
@@ -25,7 +28,9 @@ The user query is:
 
 
 def import_settings()->dict:
-    """Import settings from '.config'"""
+    """
+    Import settings from '.config'
+    """
     if not os.path.isdir(Path.home()/".config"/"askAI"):
         os.mkdir(Path.home()/".config"/"askAI")
     if not os.path.isfile(Path.home()/".config"/"askAI"/"config.yaml"):
@@ -47,7 +52,9 @@ api-key: null
 
 
 def parse(config: dict)->argparse.Namespace:
-    """Verify arguments from user dynamically from config file"""
+    """
+    Verify arguments from user dynamically from config file
+    """
     parser = argparse.ArgumentParser(description="Ask AI to create a command for you",
                                      epilog="You can always use the config file to not define every time")
     parser.add_argument('-a', '--api-point',
@@ -69,7 +76,9 @@ def parse(config: dict)->argparse.Namespace:
 
 
 def send_query(args: argparse.Namespace)->str:
-    """Send query to api point chosen by user"""
+    """
+    Send query to api point chosen by user
+    """
     match args.api_point:
         case "chatGPT" | "openai" | "openAI":
             return askChatGPT(args)
@@ -80,7 +89,9 @@ def send_query(args: argparse.Namespace)->str:
 
 
 def askChatGPT(args: argparse.Namespace)->str:
-    """Send query to chatGPT using"""
+    """
+    Send query to chatGPT using
+    """
     client = OpenAI(api_key=args.api_key)
     completion = client.chat.completions.create(
         model=args.model,
@@ -93,7 +104,9 @@ def askChatGPT(args: argparse.Namespace)->str:
 
 
 def askOllama(args: argparse.Namespace)->str:
-    """Send query to ollama using langchain lib"""
+    """
+    Send query to ollama using langchain lib
+    """
     from langchain_community.llms import Ollama
     from langchain_core.output_parsers import StrOutputParser
     from langchain_core.prompts import ChatPromptTemplate
@@ -107,16 +120,18 @@ def askOllama(args: argparse.Namespace)->str:
     return chain.invoke({"input": args.query})
 
 
-def parseOutput(resp: str)->str:
-    """Take an str with the '<CODE>' and </CODE>' brackets and return what's between"""
+def parseOutput(resp: str)->Tuple[bool, str]:
+    """
+    Take an str with the '<CODE>' and </CODE>' brackets and return what's between
+    """
     match =  re.search(r'<CODE>(.*)</CODE>', resp)
-    if match:
-        return match.group(1)
-    raise Exception(resp)
+    if match: return True, match.group(1)
+    else: return False, resp
 
 
 if __name__ == "__main__":
     config: dict = import_settings()
     args: argparse.Namespace = parse(config)
     #print(args)
-    print(parseOutput(send_query(args)))
+    isCommand, output = parseOutput(send_query(args))
+    print(output, isCommand)
