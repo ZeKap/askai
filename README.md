@@ -31,7 +31,7 @@ But it depends on what AI you use. On this topic:
 pipx install git+https://github.com/ZeKap/askai
 ```
 
-## manual
+## Manual
 Just copy askAI.py somewhere, and install its dependencies. Since it will probably be in a venv, you can use this script to call it easily:
 ```sh
 #!/bin/sh
