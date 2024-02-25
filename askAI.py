@@ -1,11 +1,11 @@
-import argparse
 import sys
-import yaml
 import os
 from pathlib import Path
 import re
-from openai import OpenAI
 from typing import Tuple
+# --- imports to be installed (the ones required only to use a model have to be imported right before their call (see openAI for example))
+import argparse
+import yaml
 import getch
 
 personnal_system_message: str = \
@@ -94,6 +94,7 @@ def askChatGPT(args: argparse.Namespace)->str:
     """
     Send query to chatGPT using
     """
+    from openai import OpenAI
     client = OpenAI(api_key=args.api_key)
     completion = client.chat.completions.create(
         model=args.model,
@@ -144,6 +145,7 @@ def askExecuteCommand(command)->bool:
 if __name__ == "__main__":
     config: dict = import_settings()
     args: argparse.Namespace = parse(config)
+    args.query = ''.join(args.query)
     #print(args)
     isCommand, output = parseOutput(send_query(args))
     if isCommand:
