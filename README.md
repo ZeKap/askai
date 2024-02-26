@@ -26,6 +26,8 @@ But it depends on what AI you use. On this topic:
 
 # Installation
 
+There are several ways to install askAI
+
 ## pipx (easiest)
 ```sh
 pipx install git+https://github.com/ZeKap/askai
