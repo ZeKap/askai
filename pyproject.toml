@@ -12,6 +12,7 @@ version = "1.0"
 dependencies = [
     'PyYAML',
     "getch",
+    "openai"
 ]
 
 [project.scripts]
